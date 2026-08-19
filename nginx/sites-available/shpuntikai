@@ -1,0 +1,26 @@
+server {
+    listen 80;
+    server_name shpuntikai.ru www.shpuntikai.ru;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name shpuntikai.ru www.shpuntikai.ru;
+
+    ssl_certificate /etc/letsencrypt/live/shpuntikai.ru/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/shpuntikai.ru/privkey.pem;
+
+    location / {
+        default_type text/html;
+        return 200 '<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Шпунтик</title></head>
+<body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
+<h1>🤖 Шпунтик — личный ИИ-ассистент</h1>
+<p>Скоро здесь появится полноценный чат.</p>
+<p>А пока используй <a href="https://admin.shpuntikai.ru">админку</a> для настройки.</p>
+</body>
+</html>';
+    }
+}

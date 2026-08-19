@@ -1,0 +1,18 @@
+server {
+    listen 80;
+    server_name api.shpuntikai.ru;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name api.shpuntikai.ru;
+
+    ssl_certificate /etc/letsencrypt/live/shpuntikai.ru/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/shpuntikai.ru/privkey.pem;
+
+    location / {
+        default_type application/json;
+        return 200 '{"status":"ok","service":"shpuntik-api","message":"API endpoint ready"}';
+    }
+}
