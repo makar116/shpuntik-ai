@@ -1,0 +1,375 @@
+app:
+  description: 'Личный ИИ-ассистент Андрея: роутер моделей с эскалацией'
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: workflow
+  name: Шпунтик
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: package
+  value:
+    plugin_unique_identifier: langgenius/openrouter:0.1.7@b7042a30570e7c308016cdda45a3b1ee2fa91aa42c8d4a4587b304d769415363
+    version: null
+kind: app
+version: 0.7.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload: {}
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        iteration_id: null
+        loop_id: null
+        sourceType: start
+        targetType: llm
+      id: 1787151395607-source-1787151571948-target
+      source: '1787151395607'
+      sourceHandle: source
+      target: '1787151571948'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        iteration_id: null
+        loop_id: null
+        sourceType: llm
+        targetType: llm
+      id: 1787151571948--1787152129943-target
+      selected: false
+      source: '1787151571948'
+      sourceHandle: source
+      target: '1787152129943'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        iteration_id: null
+        loop_id: null
+        sourceType: llm
+        targetType: llm
+      id: 1787151571948-fail-branch-1787152540407-target
+      source: '1787151571948'
+      sourceHandle: fail-branch
+      target: '1787152540407'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        iteration_id: null
+        loop_id: null
+        sourceType: llm
+        targetType: end
+      id: 1787151571948-source-1787152518247-target
+      source: '1787151571948'
+      sourceHandle: source
+      target: '1787152518247'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        iteration_id: null
+        loop_id: null
+        sourceType: end
+        targetType: variable-aggregator
+      id: 1787152518247-source-1787152613222-target
+      source: '1787152518247'
+      sourceHandle: source
+      target: '1787152613222'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        iteration_id: null
+        loop_id: null
+        sourceType: end
+        targetType: end
+      id: 1787152518247-source-1787152722246-target
+      source: '1787152518247'
+      sourceHandle: source
+      target: '1787152722246'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        iteration_id: null
+        loop_id: null
+        sourceType: variable-aggregator
+        targetType: llm
+      id: 1787152613222--1787154807608-target
+      source: '1787152613222'
+      sourceHandle: source
+      target: '1787154807608'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: true
+        title: Начало
+        type: start
+        variables: []
+      height: 73
+      id: '1787151395607'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        default_value: null
+        error_strategy: fail-branch
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: qwen/qwen3-max
+          provider: langgenius/openrouter/openrouter
+        prompt_template:
+        - id: 763a4019-cbbb-4156-a279-66c7b66d6d4b
+          role: system
+          text: 'Ты — Шпунтик, личный ИИ-ассистент Андрея.
+
+
+            Характер: дружелюбный, с лёгкой иронией, без пафоса. Ты как технически
+            подкованный друг: говоришь просто и по делу, без воды.
+
+
+            Правила:
+
+            1. Отвечай на русском, если не попросили иначе.
+
+            2. Про код — давай готовый рабочий код с краткими комментариями.
+
+            3. Не уверен — честно скажи и предложи уточнить.
+
+            4. Если задача выглядит очень сложной — скажи: «Кажется, тут нужна тяжёлая
+            артиллерия».
+
+            5. Помни контекст разговора и предыдущие договорённости.
+
+            6. Короткие ответы по умолчанию; длинные — только когда задача требует.'
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 1000
+        selected: true
+        title: 'Шпунтик: основная'
+        type: llm
+        vision:
+          enabled: false
+      height: 154
+      id: '1787151571948'
+      position:
+        x: 381
+        y: 282
+      positionAbsolute:
+        x: 381
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: z-ai/glm-5.2
+          provider: langgenius/openrouter/openrouter
+        prompt_template:
+        - role: system
+          text: 'Ты — Шпунтик, личный ИИ-ассистент Андрея. Предыдущая попытка ответить
+            завершилась ошибкой, и ты включился как тяжёлая артиллерия. Реши задачу
+            максимально тщательно, шаг за шагом, не упуская деталей. Отвечай на русском.
+            Характер: дружелюбный, с лёгкой иронией, без пафоса.'
+        selected: true
+        title: 'Эскалация: GLM-5.2'
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1787152129943'
+      position:
+        x: 684
+        y: 282
+      positionAbsolute:
+        x: 684
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        outputs: []
+        selected: false
+        title: Вывод
+        type: end
+      height: 52
+      id: '1787152518247'
+      position:
+        x: 684
+        y: 409
+      positionAbsolute:
+        x: 684
+        y: 409
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: z-ai/glm-5.2
+          provider: langgenius/openrouter/openrouter
+        prompt_template:
+        - id: dd05ae73-9959-4342-84bd-2b95f2785ee1
+          role: system
+          text: 'Ты — Шпунтик, личный ИИ-ассистент Андрея. Предыдущая попытка ответить
+            завершилась ошибкой, и ты включился как тяжёлая артиллерия. Реши задачу
+            максимально тщательно, шаг за шагом, не упуская деталей. Отвечай на русском.
+            Характер: дружелюбный, с лёгкой иронией, без пафоса.'
+        selected: false
+        title: LLM 3
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1787152540407'
+      position:
+        x: 684
+        y: 500
+      positionAbsolute:
+        x: 684
+        y: 500
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        output_type: string
+        selected: true
+        title: Агрегатор переменных
+        type: variable-aggregator
+        variables:
+        - - '1787151571948'
+          - text
+      height: 108
+      id: '1787152613222'
+      position:
+        x: 986
+        y: 409
+      positionAbsolute:
+        x: 986
+        y: 409
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        outputs: []
+        selected: true
+        title: Вывод 2
+        type: end
+      height: 52
+      id: '1787152722246'
+      position:
+        x: 986
+        y: 556
+      positionAbsolute:
+        x: 986
+        y: 556
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: qwen/qwen3-max
+          provider: langgenius/openrouter/openrouter
+        prompt_template:
+        - role: system
+          text: ''
+        title: LLM 4
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1787154807608'
+      position:
+        x: 1288
+        y: 409
+      positionAbsolute:
+        x: 1288
+        y: 409
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    viewport:
+      x: 0
+      y: 0
+      zoom: 1
+  rag_pipeline_variables: []
