@@ -12,16 +12,23 @@ const bot = new Bot(TG_TOKEN);
 const DIFY_API = "https://admin.shpuntikai.ru/v1";
 const DIFY_KEY = process.env.DIFY_API_KEY;
 const GROQ_KEY = process.env.GROQ_API_KEY || "";
+const OR_KEY = process.env.OPENROUTER_API_KEY || "";
+const OWNER_FILE = "/root/secrets/owner_id";
 
 const conversations = new Map();
 const voiceMode = new Set();
 
 bot.command("start", (ctx) =>
-  ctx.reply("Привет! Я Шпунтик. Пиши или говори голосовыми — я пойму. /voice — голосовые ответы, /reset — новая тема."));
+  ctx.reply("Привет! Я Шпунтик. Пиши или говори голосовыми. /voice — голос, /reset — новая тема, /whoami — твой ID."));
 
 bot.command("reset", (ctx) => {
   conversations.delete(ctx.from.id);
   ctx.reply("Память очищена. Начинаем заново!");
+});
+
+bot.command("whoami", (ctx) => {
+  fs.writeFileSync(OWNER_FILE, String(ctx.from.id));
+  ctx.reply(`Твой ID: ${ctx.from.id} — сохранён для алертов.`);
 });
 
 bot.command("voice", (ctx) => {
@@ -110,6 +117,29 @@ bot.on("message:voice", async (ctx) => {
 });
 
 bot.on("message:text", (ctx) => askAndReply(ctx, ctx.message.text));
+
+// ---- Монитор баланса OpenRouter ----
+async function checkCredits() {
+  if (!OR_KEY) { console.log("Монитор: нет OPENROUTER_API_KEY, пропускаю."); return; }
+  try {
+    const r = await fetch("https://openrouter.ai/api/v1/credits", {
+      headers: { Authorization: `Bearer ${OR_KEY}` },
+    });
+    if (!r.ok) { console.error("Credits check HTTP", r.status); return; }
+    const d = await r.json();
+    const left = (d.data?.total_credits ?? 0) - (d.data?.total_usage ?? 0);
+    console.log("OpenRouter balance: $" + left.toFixed(2));
+    if (left < 1 && fs.existsSync(OWNER_FILE)) {
+      const owner = fs.readFileSync(OWNER_FILE, "utf8").trim();
+      await bot.api.sendMessage(owner,
+        "⚠️ Баланс OpenRouter: $" + left.toFixed(2) + ". Пора пополнить, иначе Шпунтик замолчит.");
+    }
+  } catch (e) {
+    console.error("Credits monitor error:", e);
+  }
+}
+setTimeout(checkCredits, 30000);          // первая проверка через 30 сек
+setInterval(checkCredits, 6 * 3600000);   // затем каждые 6 часов
 
 bot.start();
 console.log("Шпунтик запущен в Telegram!");
